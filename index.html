@@ -1,5 +1,5 @@
 <!-- Car Driving Simulator (Porsche 911 Turbo S) -->
-<!-- هذا هو الكود النهائي الذي يجب رفعه على GitHub Pages لضمان عمل التحميل. -->
+<!-- تم التعديل على المسار ليتناسب مع مجلد textures/ في GitHub Pages -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -225,7 +225,7 @@
     <script>
         // Scene elements
         let scene, camera, renderer;
-        let car = null; // سيتم تعيينه بعد تحميل موديل GLTF
+        let car = null; 
         let wheels = [];
         let orbitControls;
         
@@ -318,7 +318,7 @@
             
             // Directional light (sun)
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(10, 20, 5);
+    1020:           directionalLight.position.set(10, 20, 5);
             directionalLight.castShadow = true;
             directionalLight.shadow.mapSize.width = 2048;
             directionalLight.shadow.mapSize.height = 2048;
@@ -326,14 +326,14 @@
             directionalLight.shadow.camera.far = 100;
             directionalLight.shadow.camera.left = -20;
             directionalLight.shadow.camera.right = 20;
-            directionalLight.shadow.camera.top = 20;
+    1030:           directionalLight.shadow.camera.top = 20;
             directionalLight.shadow.camera.bottom = -20;
             scene.add(directionalLight);
             
             // Point light for car highlights
             const pointLight = new THREE.PointLight(0xff2a2a, 0.5, 20);
             pointLight.position.set(0, 2, 0);
-            scene.add(pointLight);
+    1040:           scene.add(pointLight);
         }
         
         function createEnvironment() {
@@ -341,7 +341,7 @@
             const groundGeometry = new THREE.PlaneGeometry(300, 300);
             const groundMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x3a7d3a,
-                roughness: 0.8,
+    1050:           roughness: 0.8,
                 metalness: 0.2
             });
             const ground = new THREE.Mesh(groundGeometry, groundMaterial);
@@ -349,14 +349,14 @@
             ground.receiveShadow = true;
             scene.add(ground);
             
-            // Road
+  1060:           // Road
             const roadGeometry = new THREE.PlaneGeometry(12, 300);
             const roadMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x333333,
                 roughness: 0.9,
                 metalness: 0.1
             });
-            const road = new THREE.Mesh(roadGeometry, roadMaterial);
+    1070:           const road = new THREE.Mesh(roadGeometry, roadMaterial);
             road.rotation.x = -Math.PI / 2;
             road.position.z = -150;
             road.receiveShadow = true;
@@ -364,13 +364,13 @@
             
             // Road markings (simplified to avoid complexity)
             const markingGeometry = new THREE.PlaneGeometry(0.3, 2);
-            const markingMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  1080:           const markingMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
             
             for (let i = -150; i < 150; i += 10) {
                 const marking = new THREE.Mesh(markingGeometry, markingMaterial);
                 marking.rotation.x = -Math.PI / 2;
                 marking.position.set(0, 0.01, i);
-                scene.add(marking);
+  1090:             scene.add(marking);
                 roadMarkings.push(marking);
             }
         }
@@ -379,89 +379,94 @@
             // Car body material (Orange/Red Fallback)
             carBodyMaterial = new THREE.MeshPhysicalMaterial({
                 color: 0xffa500, // لون برتقالي/أحمر احتياطي لسيارة البورش
-                metalness: 1.0,
+  1100:           metalness: 1.0,
                 roughness: 0.3,
                 clearcoat: 1.0,
                 clearcoatRoughness: 0.1,
                 reflectivity: 1.0
             });
             
-            // Car details material (Black/Tire Fallback)
+  1110:           // Car details material (Black/Tire Fallback)
             carDetailsMaterial = new THREE.MeshStandardMaterial({
                 color: 0x111111,
                 metalness: 0.9,
                 roughness: 0.2
             });
             
-            // Car glass material
+  1120:           // Car glass material
             carGlassMaterial = new THREE.MeshPhysicalMaterial({
                 color: 0x444444,
                 metalness: 0.1,
                 roughness: 0,
                 transmission: 0.9,
                 transparent: true,
-                opacity: 0.7
+  1130:           opacity: 0.7
             });
         }
         
         function loadCarModel() {
             const loader = new THREE.GLTFLoader();
             
-            // بما أن الملفات مستضافة على GitHub Pages في نفس المسار، نستخدم './'
-            // لكن لضمان الوصول إلى الموارد الثنائية (scene.bin)، يجب تعيين مسارها
-            // نفترض أن كل الموارد (gltf, bin, textures) في نفس المجلد الأصلي
-            const ASSET_PATH = ''; // لا حاجة لمسار إضافي إذا كانت في الجذر
-            loader.setResourcePath(ASSET_PATH);
+            // **********************************************
+            // التعديل الرئيسي: تعيين مسار مجلد الخامات (textures/)
+            // **********************************************
+            loader.setResourcePath('textures/');
 
             loader.load(
-                'scene.gltf', // اسم الملف الذي تم رفعه
+  1150:             'scene.gltf', // اسم الملف الذي تم رفعه (في الجذر)
                 function (gltf) {
                     car = gltf.scene;
                     
                     // ضبط المقياس والموقع والزاوية للنموذج
                     car.scale.set(15, 15, 15); // مقياس تجريبي كبير لنموذج Sketchfab
                     car.position.y = 0;
-                    car.rotation.y = Math.PI; // لضبط توجيه السيارة للأمام
+  1160:               car.rotation.y = Math.PI; // لضبط توجيه السيارة للأمام
                     
                     car.traverse((object) => {
                         if (object.isMesh) {
                             object.castShadow = true;
                             object.receiveShadow = true;
                             
-                            // محاولة تطبيق خامات احتياطية إذا كانت خامات GLTF تفشل (لم يتم تحميل الصور)
+  1170:                     // محاولة تطبيق خامات احتياطية إذا كانت خامات GLTF تفشل (لم يتم تحميل الصور)
+                            // الآن يجب أن يعمل تحميل الخامات الأصلية بسبب setResourcePath()، لكن نحتفظ بالاحتياطي.
                             if (!object.material.map && !object.material.color.isColor) {
                                 const name = object.name.toLowerCase();
                                 if (name.includes('wheel') || name.includes('tire') || name.includes('rim')) {
-                                    object.material = carDetailsMaterial.clone();
-                                    wheels.push(object);
+  1180:                             object.material = carDetailsMaterial.clone();
+                                    if (!wheels.includes(object)) wheels.push(object);
                                 } else if (name.includes('glass') || name.includes('window')) {
                                     object.material = carGlassMaterial.clone();
                                 } else {
                                     object.material = carBodyMaterial.clone();
-                                }
-                            }
+  1190:                           }
+                            } else if (object.material) {
+                                // Clone existing material to ensure correct rendering properties
+                                object.material = object.material.clone();
+                            }
                             
-                            // في حالة عدم وجود مصفوفة Wheels، نبحث يدوياً عن العجلات
-                            if (wheels.length === 0 && (object.name.includes('wheel') || object.name.includes('tire'))) {
-                                wheels.push(object);
-                            }
+                            // Collect wheels if necessary
+                            if (wheels.length < 4 && (object.name.toLowerCase().includes('wheel') || object.name.toLowerCase().includes('tire'))) {
+  1200:                             if (!wheels.includes(object)) {
+                                    wheels.push(object);
+                                }
+                            }
                         }
                     });
                     
-                    scene.add(car);
+  1210:               scene.add(car);
                     resetCamera();
                     hideLoadingScreen();
                 },
                 // دالة Progress (اختياري، لعرض تقدم التحميل)
                 function (xhr) {
                     console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-                },
+  1220:             },
                 // دالة Error (مهمة جداً للتعامل مع الفشل)
                 function (error) {
                     console.error('An error happened while loading the model:', error);
                     // في حالة الفشل، نقوم بإخفاء شاشة التحميل لمنع التوقف
                     hideLoadingScreen(); 
-                }
+  1230:                 }
             );
         }
         
@@ -469,46 +474,46 @@
             cameraMode = 0;
             document.querySelectorAll('.camera-btn').forEach(b => b.classList.remove('active'));
             document.querySelector('.camera-btn[data-camera="0"]').classList.add('active');
-        }
+  1240:         }
         
         function updateCamera(smoothness = 0.05) {
             if (!car) return; // لا تفعل شيئًا إذا لم يتم تحميل السيارة بعد
             
             orbitControls.enabled = (cameraMode === 1);
             
-            if (cameraMode !== 1) {
+  1250:           if (cameraMode !== 1) {
                 const currentPosition = camera.position.clone();
                 const currentTarget = new THREE.Vector3().copy(car.position);
                 
                 let offset, targetOffset;
                 
-                if (cameraMode === 0) {
+    1260:             if (cameraMode === 0) {
                     // Chase camera (الملاحقة)
                     offset = new THREE.Vector3(0, 2, 8);
                     targetOffset = new THREE.Vector3(0, 0.5, 0);
                 } else if (cameraMode === 2) {
                     // Hood camera (غطاء المحرك)
-                    offset = new THREE.Vector3(0, 1.2, 2);
+  1270:               offset = new THREE.Vector3(0, 1.2, 2);
                     targetOffset = new THREE.Vector3(0, 1, -5);
                 } else if (cameraMode === 3) {
                     // Interior camera (الداخلية)
                     offset = new THREE.Vector3(0, 0.8, 0.5);
                     targetOffset = new THREE.Vector3(0, 0.8, -10);
-                }
+  1280:                 }
                 
                 offset.applyQuaternion(car.quaternion);
                 targetOffset.applyQuaternion(car.quaternion);
                 
                 const desiredPosition = car.position.clone().add(offset);
                 const desiredTarget = car.position.clone().add(targetOffset);
-                
+  1290:             
                 // التنعيم (Interpolation)
                 currentPosition.lerp(desiredPosition, smoothness);
                 currentTarget.lerp(desiredTarget, smoothness);
                 
                 camera.position.copy(currentPosition);
                 camera.lookAt(currentTarget);
-            }
+  1300:           }
         }
         
         function onWindowResize() {
@@ -516,144 +521,144 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-        
+  1310:         
         function onKeyDown(event) {
             if (!car) return;
             switch (event.key.toLowerCase()) {
                 case 'w':
                 case 'arrowup':
-                    acceleration = 0.03;
+    1320:             acceleration = 0.03;
                     break;
                 case 's':
                 case 'arrowdown':
                     acceleration = -0.02;
                     break;
                 case 'a':
-                case 'arrowleft':
+  1330:             case 'arrowleft':
                     steering = 0.04;
                     break;
                 case 'd':
                 case 'arrowright':
                     steering = -0.04;
                     break;
-                case ' ':
+  1340:             case ' ':
                     isHandbrake = true;
                     break;
                 case 'shift':
                     isNitro = true;
                     break;
-                case 'c':
+  1350:             case 'c':
                     cameraMode = (cameraMode + 1) % 4;
                     updateCamera(1.0); // Update camera instantly on mode change
                     // تحديث أزرار الكاميرا
                         document.querySelectorAll('.camera-btn').forEach(b => b.classList.remove('active'));
                         document.querySelector(`.camera-btn[data-camera="${cameraMode}"]`).classList.add('active');
-                    break;
+  1360:                 break;
                 case 'r':
-            1470:           // Reset car
+                    // Reset car
                     car.position.set(0, 0, 0);
                     carRotation = 0;
                     car.rotation.set(0, carRotation, 0);
-                    speed = 0;
+  1370:               speed = 0;
                     acceleration = 0;
                     steering = 0;
                     gear = 1;
                     resetCamera();
                     break;
-            }
-        }
+  1380:           }
+                }
         
         function onKeyUp(event) {
             if (!car) return;
             switch (event.key.toLowerCase()) {
                 case 'w':
-                case 'arrowup':
+    1390:             case 'arrowup':
                 case 's':
                 case 'arrowdown':
                     acceleration = 0;
                     break;
                 case 'a':
-                case 'arrowleft':
+  1400:             case 'arrowleft':
                 case 'd':
                 case 'arrowright':
                     steering = 0;
                     break;
                 case ' ':
-                    isHandbrake = false;
+    1410:             isHandbrake = false;
                     break;
                 case 'shift':
                     isNitro = false;
                     break;
             }
         }
-        
+  1420:         
         function updateCarPhysics(deltaTime) {
             if (!car) return; // تأكد من تحميل السيارة
             
             // Apply acceleration with nitro boost
             let effectiveAcceleration = acceleration;
             if (isNitro && acceleration > 0) {
-                effectiveAcceleration *= 1.5;
+  1430:               effectiveAcceleration *= 1.5;
             }
             
             speed += effectiveAcceleration * deltaTime * 60;
             
             // Apply friction and drag
-            const friction = 0.98;
+  1440:           const friction = 0.98;
             const drag = 0.992;
             
             if (Math.abs(acceleration) < 0.001) {
                 speed *= friction;
             }
-            
+  1450:           
             speed *= drag;
             
             // Limit speed based on gear and direction
             let maxSpeed = 0.8;
             if (isNitro) maxSpeed *= 1.3;
             
-            if (Math.abs(speed) > maxSpeed) {
+  1460:           if (Math.abs(speed) > maxSpeed) {
                 speed = Math.sign(speed) * maxSpeed;
             }
             
             // Calculate RPM for display
             rpm = Math.abs(speed) * 1500;
             if (rpm > 8000) rpm = 8000;
-            
+  1470:           
             // Update gear based on speed
-    1610:           if (speed > 0) {
+            if (speed > 0) {
                 if (speed > 0.6 && gear < 6) gear = 6;
                 else if (speed > 0.5 && gear < 5) gear = 5;
                 else if (speed > 0.4 && gear < 4) gear = 4;
-                else if (speed > 0.3 && gear < 3) gear = 3;
+  1480:           else if (speed > 0.3 && gear < 3) gear = 3;
                 else if (speed > 0.2 && gear < 2) gear = 2;
                 else gear = 1;
             } else {
                 gear = Math.abs(speed) > 0.1 ? 'R' : 1;
             }
             
-            // Apply steering (only when moving)
+  1490:           // Apply steering (only when moving)
             if (Math.abs(speed) > 0.01) {
                 const turnFactor = isHandbrake ? 0.08 : 0.03;
                 carRotation += steering * speed * turnFactor * deltaTime * 60;
             }
             
             // Update car rotation
-            car.rotation.y = carRotation + Math.PI;
+  1500:           car.rotation.y = carRotation + Math.PI;
             
             // Update car position
             const direction = new THREE.Vector3(
                 Math.sin(carRotation),
                 0,
                 Math.cos(carRotation)
-            );
+  1510:           );
             
             car.position.add(direction.multiplyScalar(speed * deltaTime * 60));
             
             // Update wheel rotations
             wheels.forEach(wheel => {
                 // تدوير العجلة على محورها X (محور الدوران)
-                wheel.rotation.x += speed * deltaTime * 60 * 8; 
+  1520:               wheel.rotation.x += speed * deltaTime * 60 * 8; 
             });
             
             // Update steering for front wheels (التوجيه)
@@ -664,15 +669,14 @@
                 }
             });
 
-            
-            // Update UI
+  1540:           // Update UI
             const displaySpeed = Math.abs(speed * 200);
             document.getElementById('speed-value').textContent = Math.round(displaySpeed);
             document.getElementById('gear-indicator').textContent = gear;
             document.getElementById('rpm-fill').style.width = `${(rpm / 8000) * 100}%`;
         }
         
-        function animate() {
+  1550:       function animate() {
             requestAnimationFrame(animate);
             
             const deltaTime = 0.016; // Approximate 60fps
@@ -680,7 +684,7 @@
             // Update car physics
             if (car) {
                 updateCarPhysics(deltaTime);
-            }
+  1560:           }
             
             // Update camera (smooth movement)
             updateCamera(0.05);
@@ -688,7 +692,7 @@
             // Update road markings for movement illusion
             roadMarkings.forEach(marking => {
                 marking.position.z += speed * deltaTime * 60 * 2;
-                if (marking.position.z > 10) {
+  1570:             if (marking.position.z > 10) {
                     marking.position.z -= 300;
                 }
             });
@@ -696,7 +700,7 @@
             // Render
             if (cameraMode === 1) {
                 orbitControls.update();
-            }
+  1580:           }
             renderer.render(scene, camera);
         }
         
